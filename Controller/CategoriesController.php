@@ -127,18 +127,19 @@ class CategoriesController extends CategoriesAppController {
 			$result = $this->Category->add($this->Auth->user('id'), $this->request->data);
 			if ($result === true) {
 				$this->Session->setFlash(__d('categories', 'The category has been saved'));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'tree'));
 			}
 		} catch (OutOfBoundsException $e) {
 			$this->Session->setFlash($e->getMessage());
 		} catch (Exception $e) {
 			$this->Session->setFlash($e->getMessage());
-			$this->redirect(array('action' => 'index'));
+			$this->redirect(array('action' => 'tree'));
 		}
-		if (!empty($this->request->data) && !empty($category_id)) {
+
+		if (empty($this->request->data) && !empty($category_id)) {
 			$this->request->data[$this->Category->alias]['category_id'] = $category_id;
 		}
-		$categories = $this->Category->find('list');
+		$categories = $this->Category->generateTreeList(null, null, null, "- ");
 		$users = $this->Category->User->find('list');
 		$this->set(compact('categories', 'users'));
 	}
@@ -162,7 +163,7 @@ class CategoriesController extends CategoriesAppController {
 			$this->Session->setFlash($e->getMessage());
 			$this->redirect('/');
 		}
-		$categories = $this->Category->find('list');
+		$categories = $this->Category->generateTreeList(null, null, null, "- ");
 		$users = $this->Category->User->find('list');
 		$this->set(compact('categories', 'users'));
  
