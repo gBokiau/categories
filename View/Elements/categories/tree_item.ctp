@@ -21,6 +21,13 @@
  * @param array $lastChild
  * @param boolean $hasVisibleChildren
  */
-$link = $this->Html->link($data[$modelName]['name'], array('action' => 'edit', $data[$modelName]['id']));
-echo '<span id="' . $data[$modelName]['id'] . '">' . $link . '</span>';
-?>
+$link = $this->Html->link($data[$modelName]['name'], array('action' => 'edit', $data[$modelName]['id']));?>
+<div class="navbar navbar-nav">
+<span id='<?php echo $data[$modelName]['id']; ?>'> <?php echo $link ?></span>
+<ul class="nav navbar-nav navbar-right">
+	<li class="nav navbar-right"><?php echo $this->Html->link('delete', array('action' => 'delete', $data[$modelName]['id']));?></li>
+	<li class="nav navbar-right"><?php echo $this->Html->link('move up', array('action' => 'moveup', $data[$modelName]['id']));?></li>
+	<li class="nav navbar-right"><?php echo $this->Html->link('move down', array('action' => 'movedown', $data[$modelName]['id']));?></li>
+	<li class="nav navbar-right"><?php echo $this->Html->link('edit', array('action' => 'edit', $data[$modelName]['id']));?></li>
+</ul>
+</div>

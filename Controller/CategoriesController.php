@@ -191,4 +191,27 @@ class CategoriesController extends CategoriesAppController {
 			$this->set('category', $this->Category->data['category']);
 		}
 	}
+	
+	public function admin_moveup($id = null, $delta = 1) {
+		$this->move('Up', $id, $delta);
+	}
+	
+	public function admin_movedown($id = null, $delta = 1) {
+		$this->move('Down', $id, $delta);
+	}
+	
+	
+	private function move($direction = 'Up', $id = null, $delta = null) {
+	    $this->Category->id = $id;
+	    if (!$this->Category->exists()) {
+	       throw new NotFoundException(__('Invalid category'));
+	    }
+
+	    if ($delta > 0) {
+	        $this->Category->{'move'.$direction}($this->Category->id, abs($delta));
+	    } else {
+	        $this->Session->setFlash('Please provide the number of positions the field should be moved '.$direction.'.');
+	    }
+		$this->redirect(array('action' => 'tree'));
+	}
 }
