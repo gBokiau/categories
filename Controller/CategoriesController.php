@@ -154,7 +154,7 @@ class CategoriesController extends CategoriesAppController {
 			$result = $this->Category->edit($id, null, $this->request->data);
 			if ($result === true) {
 				$this->Session->setFlash(__d('categories', 'Category saved'));
-				$this->redirect(array('action' => 'view', $this->Category->data[$this->Category->alias]['slug']));
+				$this->redirect(array('action' => 'tree', $this->Category->data[$this->Category->alias]['slug']));
 				
 			} else {
 				$this->request->data = $result;
@@ -179,12 +179,14 @@ class CategoriesController extends CategoriesAppController {
 			$result = $this->Category->validateAndDelete($id, $this->Auth->user('id'), $this->request->data);
 			if ($result === true) {
 				$this->Session->setFlash(__d('categories', 'Category deleted'));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'tree'));
 			}
+
 		} catch (Exception $e) {
 			$this->Session->setFlash($e->getMessage());
-			$this->redirect(array('action' => 'index'));
+			$this->redirect(array('action' => 'tree'));
 		}
+
 		if (!empty($this->Category->data['category'])) {
 			$this->set('category', $this->Category->data['category']);
 		}
